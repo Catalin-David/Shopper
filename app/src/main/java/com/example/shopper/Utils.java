@@ -38,8 +38,6 @@ public class Utils {
         if(null == possibleItems){
             initAllItems(context);
         }
-
-
     }
 
     public ArrayList<GroceryItem> getAllItems(Context context){
@@ -58,6 +56,10 @@ public class Utils {
         Gson gson = new Gson();
 
         ArrayList<GroceryItem> allItems = new ArrayList<>();
+
+        GroceryItem iceCream = new GroceryItem("Ice Cream", "Made of fresh milk and sprinkled with chocolate chips",
+                "https://images-na.ssl-images-amazon.com/images/I/510AGt0X0lL.jpg", "Food", 23, 3);
+
         allItems.add(new GroceryItem("Cheese", "This deluxe gourmet meat and cheese sampler features a carefully selected assortment of artisan meats, cheeses and crackers on a keepsake wooden serving tray.",
                 "https://images-na.ssl-images-amazon.com/images/I/71msf7UPOCL._SL1000_.jpg", "Food", 20, 12.99));
         allItems.add(new GroceryItem("Orange juice", "Minute Maid Juice, Orange, 10 Fl Oz, 6 Ct (Pack of 2)",
@@ -74,6 +76,7 @@ public class Utils {
                 "https://images-na.ssl-images-amazon.com/images/I/81M9MonSOaL._SL1500_.jpg", "Personal care", 68, 8.45));
         allItems.add(new GroceryItem("Chocolate", "Your girlfriend will love this!",
                 "https://images-na.ssl-images-amazon.com/images/I/61S5rMToZIL._SL1000_.jpg", "Food", 45, 17.00));
+        allItems.add(iceCream);
 
         String finalString = gson.toJson(allItems);
         editor.putString("allitems", finalString);

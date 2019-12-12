@@ -19,6 +19,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class MainFragment extends Fragment {
     private static final String TAG = "MainFragment";
@@ -58,9 +60,49 @@ public class MainFragment extends Fragment {
         popularItemsRecView.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false));
         suggestedRecView.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false));
 
-        ArrayList<GroceryItem> allitems = utils.getAllItems(getActivity());
-        if (null!=allitems){
-            newItemsAdapter.setItems(allitems);
+        ArrayList<GroceryItem> newItems = utils.getAllItems(getActivity());
+
+        Comparator<GroceryItem> newItemComparator = new Comparator<GroceryItem>() {
+            @Override
+            public int compare(GroceryItem o1, GroceryItem o2) {
+                return o2.getId() - o1.getId();
+            }
+        };
+        Collections.sort(newItems, newItemComparator);
+        if (null!=newItems){
+            newItemsAdapter.setItems(newItems);
+        }
+
+        ArrayList<GroceryItem> popularItems = utils.getAllItems(getActivity());
+        Comparator<GroceryItem> popularityComparator = new Comparator<GroceryItem>() {
+            @Override
+            public int compare(GroceryItem o1, GroceryItem o2) {
+                return compareByPopularity(o1, o2);
+            }
+        };
+        Comparator<GroceryItem> reverseComp = Collections.reverseOrder(popularityComparator);
+        Collections.sort(popularItems, reverseComp);
+        popularItemsAdapter.setItems(popularItems);
+
+        ArrayList<GroceryItem> suggestedItems = utils.getAllItems(getActivity());
+        Comparator<GroceryItem> suggestedItemsComparator = new Comparator<GroceryItem>() {
+            @Override
+            public int compare(GroceryItem o1, GroceryItem o2) {
+                return o2.getUserPoint() - o1.getUserPoint();
+            }
+        };
+        Collections.sort(suggestedItems, suggestedItemsComparator);
+        suggestedAdapter.setItems(suggestedItems);
+    }
+
+    private int compareByPopularity(GroceryItem a, GroceryItem b){
+        if(a.getPopularityPoint() > b.getPopularityPoint()){
+            return 1;
+        }else if(a.getPopularityPoint() < b.getPopularityPoint()){
+            return -1;
+        }else
+        {
+            return 0;
         }
     }
 
