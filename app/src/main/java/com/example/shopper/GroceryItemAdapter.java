@@ -1,6 +1,7 @@
 package com.example.shopper;
 
 import android.content.Context;
+import android.content.Intent;
 import android.media.Image;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -42,7 +43,7 @@ public class GroceryItemAdapter extends RecyclerView.Adapter<GroceryItemAdapter.
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
         Log.d(TAG, "onBindViewHolder: started");
         holder.name.setText(items.get(position).getName());
         holder.price.setText(String.valueOf(items.get(position).getPrice()));
@@ -53,7 +54,9 @@ public class GroceryItemAdapter extends RecyclerView.Adapter<GroceryItemAdapter.
         holder.parent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: Navigate to other activity
+                Intent intent = new Intent(context, GroceryItemActivity.class);
+                intent.putExtra("item", items.get(position));
+                context.startActivity(intent);
             }
         });
     }

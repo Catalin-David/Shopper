@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.example.shopper.Models.GroceryItem;
+import com.example.shopper.Models.Review;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -17,8 +18,10 @@ public class Utils {
     private static int ID = 0;
     public static final String DATABASE_NAME = "fake_database";
 
-    public Utils(){
+    private Context context;
 
+    public Utils(Context context){
+        this.context=context;
     }
 
     public static int getId(){
@@ -26,7 +29,25 @@ public class Utils {
         return ID;
     }
 
-    public void initDatabase(Context context){
+    public ArrayList<Review> getReviewForItem(int id){
+        Log.d(TAG, "getReviewForItem: started");
+
+        SharedPreferences sharedPreferences = context.getSharedPreferences(DATABASE_NAME, Context.MODE_PRIVATE);
+        Gson gson = new Gson();
+        Type type = new TypeToken<ArrayList<GroceryItem>>(){}.getType();
+        ArrayList<GroceryItem> items = gson.fromJson(sharedPreferences.getString("allitems", null), type);
+
+        if(null!=items){
+            for(GroceryItem item: items){
+                if(item.getId() == id){
+                    return item.getReviews();
+                }
+            }
+        }
+        return null;
+    }
+
+    public void initDatabase(){
         Log.d(TAG, "initDatabase: started");
         SharedPreferences sharedPreferences = context.getSharedPreferences(DATABASE_NAME, Context.MODE_PRIVATE);
 
@@ -36,11 +57,41 @@ public class Utils {
         ArrayList<GroceryItem>possibleItems = gson.fromJson(sharedPreferences.getString("allitems", ""), type);
 
         if(null == possibleItems){
-            initAllItems(context);
+            initAllItems();
         }
     }
 
-    public ArrayList<GroceryItem> getAllItems(Context context){
+    public boolean addReview (Review review){
+        Log.d(TAG, "addReview: started");
+
+        SharedPreferences sharedPreferences = context.getSharedPreferences(DATABASE_NAME, Context.MODE_PRIVATE);
+
+        Gson gson = new Gson();
+        Type type = new TypeToken<ArrayList<GroceryItem>>(){}.getType();
+        ArrayList<GroceryItem> items = gson.fromJson(sharedPreferences.getString("allitems", null), type);
+
+        if(null != items){
+            ArrayList<GroceryItem> newItems = new ArrayList<>();
+            for (GroceryItem item: items){
+                if(item.getId() == review.getGroceryItemId()){
+                    ArrayList<Review> reviews = item.getReviews();
+                    reviews.add(review);
+                    item.setReviews(reviews);
+                }
+
+                newItems.add(item);
+            }
+
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("allitems", gson.toJson(items));
+            editor.commit();
+            return true;
+        }
+
+        return false;
+    }
+
+    public ArrayList<GroceryItem> getAllItems(){
         Gson gson = new Gson();
         SharedPreferences sharedPreferences = context.getSharedPreferences(DATABASE_NAME, Context.MODE_PRIVATE);
         Type type = new TypeToken<ArrayList<GroceryItem>>(){}.getType();
@@ -48,7 +99,7 @@ public class Utils {
         return allItems;
     }
 
-    private void initAllItems(Context context){
+    private void initAllItems(){
 
         SharedPreferences sharedPreferences = context.getSharedPreferences(DATABASE_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
