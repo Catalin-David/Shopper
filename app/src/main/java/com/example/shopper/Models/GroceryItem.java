@@ -18,6 +18,7 @@ public class GroceryItem implements Parcelable {
     private int popularityPoint;
     private int userPoint;
     private ArrayList<Review> reviews;
+    private int rate;
 
     public GroceryItem(String name, String description, String imageUrl, String category, int availableAmount,
                        double price) {
@@ -31,7 +32,9 @@ public class GroceryItem implements Parcelable {
         this.popularityPoint = 0;
         this.userPoint = 0;
         this.reviews = new ArrayList<>();
+        this.rate = 0;
     }
+
 
     protected GroceryItem(Parcel in) {
         id = in.readInt();
@@ -44,6 +47,7 @@ public class GroceryItem implements Parcelable {
         popularityPoint = in.readInt();
         userPoint = in.readInt();
         reviews = in.createTypedArrayList(Review.CREATOR);
+        rate = in.readInt();
     }
 
     public static final Creator<GroceryItem> CREATOR = new Creator<GroceryItem>() {
@@ -138,6 +142,14 @@ public class GroceryItem implements Parcelable {
         this.reviews = reviews;
     }
 
+    public int getRate() {
+        return rate;
+    }
+
+    public void setRate(int rate) {
+        this.rate = rate;
+    }
+
     @Override
     public String toString() {
         return "GroceryItem{" +
@@ -151,8 +163,10 @@ public class GroceryItem implements Parcelable {
                 ", popularityPoint=" + popularityPoint +
                 ", userPoint=" + userPoint +
                 ", reviews=" + reviews +
+                ", rate=" + rate +
                 '}';
     }
+
 
     @Override
     public int describeContents() {
@@ -171,5 +185,6 @@ public class GroceryItem implements Parcelable {
         dest.writeInt(popularityPoint);
         dest.writeInt(userPoint);
         dest.writeTypedList(reviews);
+        dest.writeInt(rate);
     }
 }

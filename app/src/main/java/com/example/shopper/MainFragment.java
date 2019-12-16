@@ -59,7 +59,10 @@ public class MainFragment extends Fragment {
         newItemsRecView.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false));
         popularItemsRecView.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false));
         suggestedRecView.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false));
+        updateRecViews();
+    }
 
+    private void updateRecViews(){
         ArrayList<GroceryItem> newItems = utils.getAllItems();
 
         Comparator<GroceryItem> newItemComparator = new Comparator<GroceryItem>() {
@@ -93,6 +96,12 @@ public class MainFragment extends Fragment {
         };
         Collections.sort(suggestedItems, suggestedItemsComparator);
         suggestedAdapter.setItems(suggestedItems);
+    }
+
+    @Override
+    public void onResume() {
+        updateRecViews();
+        super.onResume();
     }
 
     private int compareByPopularity(GroceryItem a, GroceryItem b){

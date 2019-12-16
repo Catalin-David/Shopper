@@ -24,9 +24,46 @@ public class Utils {
         this.context=context;
     }
 
+    public void updateTheRate (GroceryItem item, int newRate){
+        Log.d(TAG, "updateTheRate: started for item " + item.getName());
+
+        SharedPreferences sharedPreferences = context.getSharedPreferences(DATABASE_NAME, Context.MODE_PRIVATE);
+        Gson gson = new Gson();
+        Type type = new TypeToken<ArrayList<GroceryItem>>(){}.getType();
+        ArrayList<GroceryItem>items = gson.fromJson(sharedPreferences.getString("allitems", null), type);
+        if(null != items){
+            ArrayList<GroceryItem> newItems = new ArrayList<>();
+            for (GroceryItem i:items){
+                if(i.getId() == item.getId()){
+                    i.setRate(newRate);
+                }
+                newItems.add(i);
+            }
+
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("allitems", gson.toJson(newItems));
+            editor.commit();
+        }
+    }
+
     public static int getId(){
         ID++;
         return ID;
+    }
+
+    public void addItemToCart(int id){
+        Log.d(TAG, "addItemToCart: started");
+        SharedPreferences sharedPreferences = context.getSharedPreferences(DATABASE_NAME, Context.MODE_PRIVATE);
+        Gson gson = new Gson();
+        Type type = new TypeToken<ArrayList<Integer>>(){}.getType();
+        ArrayList<Integer> cartItems = gson.fromJson(sharedPreferences.getString("cartitems", null), type);
+        if(cartItems == null){
+            cartItems = new ArrayList<>();
+        }
+        cartItems.add(id);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("cartitems", gson.toJson(cartItems));
+        editor.commit();
     }
 
     public ArrayList<Review> getReviewForItem(int id){
