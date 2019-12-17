@@ -1,6 +1,7 @@
 package com.example.shopper;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -117,15 +118,16 @@ public class MainFragment extends Fragment {
 
     private void initBottomNavigation(){
         bottomNavigationView.setSelectedItemId(R.id.homeActivity);
-        bottomNavigationView.setOnNavigationItemReselectedListener(new BottomNavigationView.OnNavigationItemReselectedListener() {
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
-            public void onNavigationItemReselected(@NonNull MenuItem menuItem) {
-                switch (menuItem.getItemId()){
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                switch (menuItem.getItemId()) {
                     case R.id.search:
-                        
+                        Intent intent = new Intent(getActivity(), SearchActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
                         break;
                     case R.id.homeActivity:
-
                         break;
                     case R.id.cart:
                         Toast.makeText(getActivity(), "Cart selected", Toast.LENGTH_SHORT).show();
@@ -133,6 +135,7 @@ public class MainFragment extends Fragment {
                     default:
                         break;
                 }
+                return true;
             }
         });
     }

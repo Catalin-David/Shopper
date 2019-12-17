@@ -20,8 +20,17 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 
-public class SearchActivity extends AppCompatActivity {
+public class SearchActivity extends AppCompatActivity implements ShowAllCategoriesDialog.SelectCategory{
     private static final String TAG = "SearchActivity";
+
+    @Override
+    public void onSelectCategoryResult(String category) {
+        Log.d(TAG, "onSelectCategoryResult: category: " + category);
+        Intent intent = new Intent(this, ShowItemsByCategoryActivity.class);
+        intent.putExtra("category", category);
+        startActivity(intent);
+    }
+
     private EditText searchBar;
     private ImageView searchIcon;
     private TextView firstCategory, secondCategory, thirdCategory, seeAllCategories;
@@ -49,7 +58,8 @@ public class SearchActivity extends AppCompatActivity {
         seeAllCategories.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: show a dialog
+                ShowAllCategoriesDialog dialog = new ShowAllCategoriesDialog();
+                dialog.show(getSupportFragmentManager(), "all dialog");
             }
         });
     }
@@ -80,19 +90,44 @@ public class SearchActivity extends AppCompatActivity {
                 thirdCategory.setText(categories.get(2));
                 break;
         }
+
+        firstCategory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SearchActivity.this, ShowItemsByCategoryActivity.class);
+                intent.putExtra("category", firstCategory.getText().toString());
+                startActivity(intent);
+            }
+        });
+        secondCategory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SearchActivity.this, ShowItemsByCategoryActivity.class);
+                intent.putExtra("category", secondCategory.getText().toString());
+                startActivity(intent);
+            }
+        });
+        thirdCategory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SearchActivity.this, ShowItemsByCategoryActivity.class);
+                intent.putExtra("category", thirdCategory.getText().toString());
+                startActivity(intent);
+            }
+        });
     }
 
     private void initBottomNavigation(){
         bottomNavigationView.setSelectedItemId(R.id.search);
-        bottomNavigationView.setOnNavigationItemReselectedListener(new BottomNavigationView.OnNavigationItemReselectedListener() {
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
-            public void onNavigationItemReselected(@NonNull MenuItem menuItem) {
-                switch (menuItem.getItemId()){
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                switch (menuItem.getItemId()) {
                     case R.id.search:
                         break;
                     case R.id.homeActivity:
                         Intent intent = new Intent(SearchActivity.this, MainActivity.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(intent);
                         break;
                     case R.id.cart:
@@ -101,6 +136,7 @@ public class SearchActivity extends AppCompatActivity {
                     default:
                         break;
                 }
+                return true;
             }
         });
     }

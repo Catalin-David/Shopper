@@ -114,6 +114,7 @@ public class GroceryItemActivity extends AppCompatActivity implements AddReviewD
                 if(checkIfRateHasChanged(1)){
                     updateDatabase(1);
                     changeVisibility(1);
+                    currentRate = 1;
                 }
             }
         });
@@ -123,6 +124,7 @@ public class GroceryItemActivity extends AppCompatActivity implements AddReviewD
                 if(checkIfRateHasChanged(2)){
                     updateDatabase(2);
                     changeVisibility(2);
+                    currentRate = 2;
                 }
             }
         });
@@ -132,6 +134,7 @@ public class GroceryItemActivity extends AppCompatActivity implements AddReviewD
                 if(checkIfRateHasChanged(3)){
                     updateDatabase(3);
                     changeVisibility(3);
+                    currentRate = 3;
                 }
             }
         });
@@ -141,6 +144,7 @@ public class GroceryItemActivity extends AppCompatActivity implements AddReviewD
                 if(checkIfRateHasChanged(1)){
                     updateDatabase(1);
                     changeVisibility(1);
+                    currentRate = 1;
                 }
             }
         });
@@ -150,6 +154,7 @@ public class GroceryItemActivity extends AppCompatActivity implements AddReviewD
                 if(checkIfRateHasChanged(2)){
                     updateDatabase(2);
                     changeVisibility(2);
+                    currentRate = 2;
                 }
             }
         });
@@ -159,6 +164,7 @@ public class GroceryItemActivity extends AppCompatActivity implements AddReviewD
                 if(checkIfRateHasChanged(3)){
                     updateDatabase(3);
                     changeVisibility(3);
+                    currentRate = 3;
                 }
             }
         });
