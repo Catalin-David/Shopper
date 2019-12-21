@@ -127,10 +127,10 @@ public class MainFragment extends Fragment {
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(intent);
                         break;
-                    case R.id.homeActivity:
-                        break;
                     case R.id.cart:
-                        Toast.makeText(getActivity(), "Cart selected", Toast.LENGTH_SHORT).show();
+                        Intent intent1 = new Intent(getActivity(), CartActivity.class);
+                        intent1.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent1);
                         break;
                     default:
                         break;

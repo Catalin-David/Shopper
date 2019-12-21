@@ -1,6 +1,7 @@
 package com.example.shopper;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
 
@@ -16,6 +17,7 @@ public class Utils {
     private static final String TAG = "Utils";
 
     private static int ID = 0;
+    private static int ORDER_ID = 0;
     public static final String DATABASE_NAME = "fake_database";
 
     private Context context;
@@ -45,6 +47,11 @@ public class Utils {
             editor.putString("allitems", gson.toJson(newItems));
             editor.commit();
         }
+    }
+
+    public static int getOrderId(){
+        ORDER_ID++;
+        return ORDER_ID;
     }
 
     public static int getId() {
@@ -169,7 +176,7 @@ public class Utils {
         allItems.add(new GroceryItem("Deodorant", "Gives you that old man strength",
                 "https://images-na.ssl-images-amazon.com/images/I/81M9MonSOaL._SL1500_.jpg", "Personal care", 68, 8.45));
         allItems.add(new GroceryItem("Chocolate", "Your girlfriend will love this!",
-                "https://images-na.ssl-images-amazon.com/images/I/61S5rMToZIL._SL1000_.jpg", "Food", 45, 17.00));
+                "https://images-na.ssl-images-amazon.com/images/I/61S5rMToZIL._SL1000_.jpg", "Food", 45, 17));
         allItems.add(iceCream);
 
         String finalString = gson.toJson(allItems);
@@ -263,6 +270,7 @@ public class Utils {
         }
         return categories;
     }
+
     public ArrayList<GroceryItem> getItemsByCategory(String category){
         Log.d(TAG, "getItemsByCategory: started");
         SharedPreferences sharedPreferences = context.getSharedPreferences(DATABASE_NAME, Context.MODE_PRIVATE);
@@ -278,6 +286,63 @@ public class Utils {
                 }
             }
         }
+        return newItems;
+    }
+
+    public ArrayList<Integer> getCartItems(){
+        Log.d(TAG, "getCartItems: started");
+
+        SharedPreferences sharedPreferences = context.getSharedPreferences(DATABASE_NAME, Context.MODE_PRIVATE);
+        Gson gson = new Gson();
+        Type type = new TypeToken<ArrayList<Integer>>(){}.getType();
+        ArrayList<Integer> cartItems  = gson.fromJson(sharedPreferences.getString("cartitems", null), type);
+
+        return cartItems;
+    }
+
+    public ArrayList<GroceryItem> getItemsById(ArrayList<Integer> ids){
+        Log.d(TAG, "getItemsById: started");
+
+        SharedPreferences sharedPreferences = context.getSharedPreferences(DATABASE_NAME, Context.MODE_PRIVATE);
+        Type type = new TypeToken<ArrayList<GroceryItem>>(){}.getType();
+        Gson gson = new Gson();
+
+        ArrayList<GroceryItem> allItems = gson.fromJson(sharedPreferences.getString("allitems", null), type);
+        ArrayList<GroceryItem> cartItems = new ArrayList<>();
+        if(null !=allItems)
+        {
+            for(int id:ids){
+                for (GroceryItem item:allItems){
+                    if(item.getId() == id){
+                        cartItems.add(item);
+                    }
+                }
+            }
+        }
+        return cartItems;
+    }
+
+    public ArrayList<Integer> deleteCartItem(GroceryItem item){
+        Log.d(TAG, "deleteCartItem: started");
+
+        SharedPreferences sharedPreferences = context.getSharedPreferences(DATABASE_NAME, Context.MODE_PRIVATE);
+        Gson gson = new Gson();
+        Type type = new TypeToken<ArrayList<Integer>>(){}.getType();
+        ArrayList<Integer> cartItems = gson.fromJson(sharedPreferences.getString("cartitems", null), type);
+        ArrayList<Integer> newItems = new ArrayList<>();
+
+        if(null != cartItems){
+            for(int i:cartItems){
+                if(i != item.getId()){
+                    newItems.add(i);
+                }
+            }
+
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("cartitems", gson.toJson(newItems));
+            editor.commit();
+        }
+
         return newItems;
     }
 }
