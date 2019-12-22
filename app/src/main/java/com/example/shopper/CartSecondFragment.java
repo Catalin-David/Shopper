@@ -25,12 +25,12 @@ public class CartSecondFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_second_cart, container, false);
 
-        initViews(view);
-
         Bundle bundle = getArguments();
         if(null != bundle){
             incomingOrder = bundle.getParcelable("order");
         }
+
+        initViews(view);
 
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,7 +54,16 @@ public class CartSecondFragment extends Fragment {
     private void passData(){
         Log.d(TAG, "passData: started");
         Bundle bundle = new Bundle();
+        incomingOrder.setAddress(edtTxtAddress.getText().toString());
+        incomingOrder.setEmail(edtTextEmail.getText().toString());
+        incomingOrder.setPhoneNumber(edtTextPhone.getText().toString());
+        incomingOrder.setZipCode(edtTextZipcode.getText().toString());
+
         bundle.putParcelable("order", incomingOrder);
+
+        CartThirdFragment thirdFragment = new CartThirdFragment();
+        thirdFragment.setArguments(bundle);
+        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, thirdFragment).commit();
     }
 
     private boolean validateData(){

@@ -13,6 +13,8 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
+import retrofit2.converter.gson.GsonConverterFactory;
+
 public class Utils {
     private static final String TAG = "Utils";
 
@@ -344,5 +346,19 @@ public class Utils {
         }
 
         return newItems;
+    }
+
+    public void removeCartItems(){
+        Log.d(TAG, "removeCartItems: started");
+
+        SharedPreferences sharedPreferences = context.getSharedPreferences(DATABASE_NAME, Context.MODE_PRIVATE);
+        Gson gson = new Gson();
+        Type type = new TypeToken<ArrayList<Integer>>(){}.getType();
+        ArrayList<Integer> cartItems = gson.fromJson(sharedPreferences.getString("cartitems", null), type);
+        ArrayList<Integer> newItems = new ArrayList<>();
+
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("cartitems", gson.toJson(newItems));
+        editor.commit();
     }
 }

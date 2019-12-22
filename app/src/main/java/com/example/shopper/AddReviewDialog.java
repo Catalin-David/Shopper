@@ -16,6 +16,7 @@ import androidx.fragment.app.DialogFragment;
 import com.example.shopper.Models.GroceryItem;
 import com.example.shopper.Models.Review;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -85,9 +86,11 @@ public class AddReviewDialog extends DialogFragment {
     private String getCurrentDate(){
         Log.d(TAG, "getCurrentDate: started");
 
-        Date date = Calendar.getInstance().getTime();
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-mm-yyyy");
-        return sdf.format(date);
+//        Date date = Calendar.getInstance().getTime();
+//        SimpleDateFormat sdf = new SimpleDateFormat("dd-mm-yyyy");
+//        return sdf.format(date);
+        Date date = new Date();
+        return DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT).format(date);
     }
 
     private void initViews(View view){

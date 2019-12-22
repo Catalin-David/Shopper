@@ -17,6 +17,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.shopper.Models.GroceryItem;
 import com.example.shopper.Models.Order;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 
 public class CartFirstFragment extends Fragment implements CartRecViewAdapter.GetTotalPrice,
@@ -50,12 +52,8 @@ public class CartFirstFragment extends Fragment implements CartRecViewAdapter.Ge
     @Override
     public void onGettingTotalPriceResult(double price) {
         Log.d(TAG, "onGettingTotalPriceResult: total price: " + price);
-        price = price*100.0;
-        int p = (int) price;
-        double finalprice = (double)p;
-        finalprice = finalprice/100.0;
-        txtPrice.setText(String.valueOf(finalprice));
-        this.totalPrice = finalprice;
+        this.totalPrice = BigDecimal.valueOf(price).setScale(2, RoundingMode.HALF_UP).doubleValue();
+        txtPrice.setText(String.valueOf(this.totalPrice));
     }
     private Utils utils;
     private TextView txtPrice, txtNoItem;
@@ -121,6 +119,12 @@ public class CartFirstFragment extends Fragment implements CartRecViewAdapter.Ge
             }
             this.items = itemsIds;
             adapter.setItems(items);
+        }
+        else{
+            btnNext.setVisibility(View.GONE);
+            btnNext.setEnabled(false);
+            recyclerView.setVisibility(View.GONE);
+            txtNoItem.setVisibility(View.VISIBLE);
         }
     }
 
