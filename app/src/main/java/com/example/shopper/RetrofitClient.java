@@ -8,6 +8,6 @@ import retrofit2.http.POST;
 
 public interface RetrofitClient {
 
-    @POST("posts")
+    @POST("post")
     Call<Order> goToFakePayment(@Body Order order);
 }

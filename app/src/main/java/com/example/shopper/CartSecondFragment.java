@@ -1,15 +1,19 @@
 package com.example.shopper;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 
 import com.example.shopper.Models.Order;
@@ -20,6 +24,9 @@ public class CartSecondFragment extends Fragment {
     private EditText edtTxtAddress, edtTextZipcode, edtTextPhone, edtTextEmail;
     private Button btnCancel, btnNext;
     private Order incomingOrder;
+    private ConstraintLayout parent, addressConstLayout, emailConstLayout, phoneConstLayout, zipConstLayout;
+    private NestedScrollView nestedScrollView;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -48,7 +55,55 @@ public class CartSecondFragment extends Fragment {
             }
         });
 
+        initConstLayouts();
+
         return view;
+    }
+
+    private void initConstLayouts(){
+        Log.d(TAG, "initConstLayouts: started");
+
+        parent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                closeKeyboard();
+            }
+        });
+
+        addressConstLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                closeKeyboard();
+            }
+        });
+
+        emailConstLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                closeKeyboard();
+            }
+        });
+
+        phoneConstLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                closeKeyboard();
+            }
+        });
+
+        zipConstLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                closeKeyboard();
+            }
+        });
+
+        nestedScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                closeKeyboard();
+            }
+        });
     }
 
     private void passData(){
@@ -93,5 +148,19 @@ public class CartSecondFragment extends Fragment {
         edtTextEmail = view.findViewById(R.id.edtTextEmail);
         btnCancel = view.findViewById(R.id.btnCancel);
         btnNext = view.findViewById(R.id.btnNext);
+        parent = view.findViewById(R.id.parent);
+        addressConstLayout = view.findViewById(R.id.addressConstLayout);
+        emailConstLayout = view.findViewById(R.id.emailConstLayout);
+        zipConstLayout = view.findViewById(R.id.zipConstLayout);
+        phoneConstLayout = view.findViewById(R.id.numberConstLayout);
+        nestedScrollView = view.findViewById(R.id.nestedScrollView);
+    }
+
+    private void closeKeyboard(){
+        View view = getActivity().getCurrentFocus();
+        if (null != view){
+            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
     }
 }

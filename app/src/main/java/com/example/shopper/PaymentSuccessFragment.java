@@ -11,6 +11,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.shopper.Models.Order;
+
+import java.util.ArrayList;
+
 public class PaymentSuccessFragment extends Fragment {
     private static final String TAG = "PaymentSuccessFragment";
 
@@ -23,6 +27,15 @@ public class PaymentSuccessFragment extends Fragment {
 
         Utils utils = new Utils(getContext());
         utils.removeCartItems();
+
+        Bundle bundle = getArguments();
+        try {
+            Order order = bundle.getParcelable("order");
+            ArrayList<Integer> itemIds = order.getItems();
+            utils.addPopularityPoints(itemIds);
+        }catch (NullPointerException e){
+            e.printStackTrace();
+        }
 
         btnBack = view.findViewById(R.id.btnGoBack);
         btnBack.setOnClickListener(new View.OnClickListener() {

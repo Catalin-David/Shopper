@@ -361,4 +361,26 @@ public class Utils {
         editor.putString("cartitems", gson.toJson(newItems));
         editor.commit();
     }
+
+    public void addPopularityPoints(ArrayList<Integer>cartItems){
+        Log.d(TAG, "addPopularityPoints: started");
+
+        SharedPreferences sharedPreferences = context.getSharedPreferences(DATABASE_NAME, Context.MODE_PRIVATE);
+        Gson gson = new Gson();
+        Type type = new TypeToken<ArrayList<GroceryItem>>(){}.getType();
+        ArrayList<GroceryItem> allItems = gson.fromJson(sharedPreferences.getString("allitems", null), type);
+
+        for (GroceryItem item:allItems){
+            for(int i:cartItems){
+                if(item.getId() == i){
+                    item.setPopularityPoint(item.getPopularityPoint()+1);
+                    break;
+                }
+            }
+        }
+
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("allitems", gson.toJson(allItems));
+        editor.commit();
+    }
 }

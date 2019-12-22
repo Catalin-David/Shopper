@@ -92,7 +92,6 @@ public class CartThirdFragment extends Fragment {
         incomingOrder.setPaymentMethod(radioButton.getText().toString());
         incomingOrder.setSuccess(true);
 
-
         goToPaymentResult(incomingOrder);
     }
 
@@ -100,7 +99,11 @@ public class CartThirdFragment extends Fragment {
         Log.d(TAG, "goToPaymentResult: started");
 
         if(order.isSuccess()){
+            Bundle bundle = new Bundle();
+            bundle.putParcelable("order", order);
+
             PaymentSuccessFragment successFragment = new PaymentSuccessFragment();
+            successFragment.setArguments(bundle);
             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, successFragment).commit();
         }else{
             PaymentFailureFragment failureFragment = new PaymentFailureFragment();

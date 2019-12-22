@@ -3,11 +3,14 @@ package com.example.shopper;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -47,19 +50,42 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         switch (menuItem.getItemId()){
             case R.id.cart:
-                Toast.makeText(this, "Cart selected", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(MainActivity.this, CartActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
                 break;
             case R.id.categories:
-
+                Intent searchIntent = new Intent(MainActivity.this, SearchActivity.class);
+                searchIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(searchIntent);
                 break;
             case R.id.about:
-
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this)
+                        .setTitle("About the developer")
+                        .setMessage("Application developed by David Catalin\nFor business inquires contact here: cata@dav@yahoo.com")
+                        .setPositiveButton("I wanna know more", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                builder.create().show();
                 break;
             case R.id.licenses:
-
+                LicensesDialog licensesDialog = new LicensesDialog();
+                licensesDialog.show(getSupportFragmentManager(), "licenses");
                 break;
             case R.id.terms:
-
+                AlertDialog.Builder termsBuilder = new AlertDialog.Builder(MainActivity.this)
+                        .setTitle("Terms of use")
+                        .setMessage("There are no terms ¯|_(ツ)_|¯")
+                        .setPositiveButton("Haha cool", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                termsBuilder.create().show();
                 break;
             default:
                 break;

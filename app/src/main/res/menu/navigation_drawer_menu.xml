@@ -9,7 +9,7 @@
         android:id="@+id/categories"
         android:icon="@drawable/ic_category"/>
     <item
-        android:title="About is"
+        android:title="About us"
         android:id="@+id/about"
         android:icon="@drawable/ic_info"/>
     <item
