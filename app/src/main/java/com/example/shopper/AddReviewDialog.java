@@ -58,7 +58,6 @@ public class AddReviewDialog extends DialogFragment {
             @Override
             public void onClick(View v) {
                 addReview();
-                dismiss();
             }
         });
 
@@ -68,19 +67,34 @@ public class AddReviewDialog extends DialogFragment {
     private void addReview(){
         Log.d(TAG, "addReview: started");
 
-        String name = edtTextName.getText().toString();
-        String reviewText = edtTextReview.getText().toString();
-        String date = getCurrentDate();
+        if(validateData()) {
+            String name = edtTextName.getText().toString();
+            String reviewText = edtTextReview.getText().toString();
+            String date = getCurrentDate();
+            Review review = new Review(itemId, name, date, reviewText);
 
-        Review review = new Review(itemId, name, date, reviewText);
+            try {
+                addReview = (AddReview) getActivity();
 
-        try{
-            addReview = (AddReview) getActivity();
-
-            addReview.onAddReviewResult(review);
-        }catch (ClassCastException e){
-            e.printStackTrace();
+                addReview.onAddReviewResult(review);
+            } catch (ClassCastException e) {
+                e.printStackTrace();
+            }
         }
+        else{
+            txtWarning.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private boolean validateData(){
+        Log.d(TAG, "validateData: started");
+
+        if(edtTextName.getText().toString().equals("") || edtTextReview.getText().toString().equals("")){
+            Log.d(TAG, "validateData: returns false");
+            return false;
+        }
+        Log.d(TAG, "validateData: returns true");
+        return true;
     }
 
     private String getCurrentDate(){

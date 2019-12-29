@@ -383,4 +383,23 @@ public class Utils {
         editor.putString("allitems", gson.toJson(allItems));
         editor.commit();
     }
+
+    public void increaseUserPoint(GroceryItem item, int points){
+        Log.d(TAG, "increaseUserPoint: increasing points for  " + item.getName() + " with " + points);
+        SharedPreferences sharedPreferences = context.getSharedPreferences(DATABASE_NAME, Context.MODE_PRIVATE);
+        Gson gson = new Gson();
+        Type type = new TypeToken<ArrayList<GroceryItem>>(){}.getType();
+        ArrayList<GroceryItem> allItems = gson.fromJson(sharedPreferences.getString("allitems", null), type);
+        if (null != allItems){
+            for(GroceryItem i:allItems){
+                if(i.getId() == item.getId()){
+                    i.setUserPoint(i.getUserPoint()+points);
+                }
+            }
+
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("allitems", gson.toJson(allItems));
+            editor.commit();
+        }
+    }
 }

@@ -7,6 +7,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -60,6 +62,24 @@ public class SearchActivity extends AppCompatActivity implements ShowAllCategori
             public void onClick(View v) {
                 ShowAllCategoriesDialog dialog = new ShowAllCategoriesDialog();
                 dialog.show(getSupportFragmentManager(), "all dialog");
+            }
+        });
+
+        searchBar.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                ArrayList<GroceryItem> items = utils.searchForItem(String.valueOf(s));
+                adapter.setItems(items);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
             }
         });
     }
@@ -131,7 +151,9 @@ public class SearchActivity extends AppCompatActivity implements ShowAllCategori
                         startActivity(intent);
                         break;
                     case R.id.cart:
-                        Toast.makeText(SearchActivity.this, "Cart selected", Toast.LENGTH_SHORT).show();
+                        Intent cartIntent = new Intent(SearchActivity.this, CartActivity.class);
+                        cartIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(cartIntent);
                         break;
                     default:
                         break;
@@ -146,6 +168,9 @@ public class SearchActivity extends AppCompatActivity implements ShowAllCategori
 
         String text = searchBar.getText().toString();
         ArrayList<GroceryItem> items = utils.searchForItem(text);
+        for (GroceryItem item:items){
+            utils.increaseUserPoint(item, 3);
+        }
         adapter.setItems(items);
     }
 

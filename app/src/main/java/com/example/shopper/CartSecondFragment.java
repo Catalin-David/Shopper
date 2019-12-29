@@ -1,6 +1,8 @@
 package com.example.shopper;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -42,7 +44,9 @@ public class CartSecondFragment extends Fragment {
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new CartFirstFragment()).commit();
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .setCustomAnimations(R.anim.in, R.anim.out)
+                        .replace(R.id.fragment_container, new CartFirstFragment()).commit();
             }
         });
 
@@ -51,6 +55,18 @@ public class CartSecondFragment extends Fragment {
             public void onClick(View v) {
                 if(validateData()){
                     passData();
+                }
+                else {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
+                            .setTitle("Error")
+                            .setMessage("Please fill all the blanks with your valid data")
+                            .setPositiveButton("Dismiss", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                }
+                            });
+                    builder.create().show();
                 }
             }
         });
@@ -118,7 +134,9 @@ public class CartSecondFragment extends Fragment {
 
         CartThirdFragment thirdFragment = new CartThirdFragment();
         thirdFragment.setArguments(bundle);
-        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, thirdFragment).commit();
+        getActivity().getSupportFragmentManager().beginTransaction()
+                .setCustomAnimations(R.anim.out, R.anim.in)
+                .replace(R.id.fragment_container, thirdFragment).commit();
     }
 
     private boolean validateData(){

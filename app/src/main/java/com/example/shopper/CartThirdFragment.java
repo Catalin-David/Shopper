@@ -82,7 +82,9 @@ public class CartThirdFragment extends Fragment {
         CartSecondFragment cartSecondFragment = new CartSecondFragment();
         cartSecondFragment.setArguments(bundle);
 
-        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, cartSecondFragment).commit();
+        getActivity().getSupportFragmentManager().beginTransaction()
+                .setCustomAnimations(R.anim.out, R.anim.in)
+                .replace(R.id.fragment_container, cartSecondFragment).commit();
     }
 
     private void goToPayment(){
@@ -104,10 +106,18 @@ public class CartThirdFragment extends Fragment {
 
             PaymentSuccessFragment successFragment = new PaymentSuccessFragment();
             successFragment.setArguments(bundle);
-            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, successFragment).commit();
+            getActivity().getSupportFragmentManager().beginTransaction()
+                    .setCustomAnimations(R.anim.in, R.anim.out)
+                    .replace(R.id.fragment_container, successFragment).commit();
         }else{
+            Bundle bundle = new Bundle();
+            bundle.putParcelable("order", order);
+
             PaymentFailureFragment failureFragment = new PaymentFailureFragment();
-            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, failureFragment).commit();
+            failureFragment.setArguments(bundle);
+            getActivity().getSupportFragmentManager().beginTransaction()
+                    .setCustomAnimations(R.anim.in, R.anim.out)
+                    .replace(R.id.fragment_container, failureFragment).commit();
         }
     }
 

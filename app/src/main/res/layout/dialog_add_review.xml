@@ -50,6 +50,8 @@
         android:id="@+id/edtTextReview" />
 
     <TextView
+        android:text="Please fill all of the fields"
+        android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/txtWarning"
