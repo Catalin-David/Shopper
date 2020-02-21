@@ -3,26 +3,52 @@ package com.example.shopper.Models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
+
 import com.example.shopper.Utils;
 
 import java.util.ArrayList;
 
+@Entity(tableName = "grocery_items")
 public class GroceryItem implements Parcelable {
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "_id")
     private int id;
     private String name;
     private String description;
+    @ColumnInfo(name = "image_url")
     private String imageUrl;
     private String category;
+    @ColumnInfo(name = "available_amount")
     private int availableAmount;
     private double price;
+    @ColumnInfo(name = "popularity_point")
     private int popularityPoint;
+    @ColumnInfo(name = "user_point")
     private int userPoint;
     private ArrayList<Review> reviews;
     private int rate;
 
     public GroceryItem(String name, String description, String imageUrl, String category, int availableAmount,
+                       double price, int popularityPoint, int userPoint, ArrayList<Review> reviews, int rate) {
+        this.name = name;
+        this.description = description;
+        this.imageUrl = imageUrl;
+        this.category = category;
+        this.availableAmount = availableAmount;
+        this.price = price;
+        this.popularityPoint = popularityPoint;
+        this.userPoint = userPoint;
+        this.reviews = reviews;
+        this.rate = rate;
+    }
+
+    @Ignore
+    public GroceryItem(String name, String description, String imageUrl, String category, int availableAmount,
                        double price) {
-        this.id = Utils.getId();
         this.name = name;
         this.description = description;
         this.imageUrl = imageUrl;
@@ -35,7 +61,7 @@ public class GroceryItem implements Parcelable {
         this.rate = 0;
     }
 
-
+    @Ignore
     protected GroceryItem(Parcel in) {
         id = in.readInt();
         name = in.readString();
@@ -50,6 +76,7 @@ public class GroceryItem implements Parcelable {
         rate = in.readInt();
     }
 
+    @Ignore
     public static final Creator<GroceryItem> CREATOR = new Creator<GroceryItem>() {
         @Override
         public GroceryItem createFromParcel(Parcel in) {
@@ -150,6 +177,7 @@ public class GroceryItem implements Parcelable {
         this.rate = rate;
     }
 
+    @Ignore
     @Override
     public String toString() {
         return "GroceryItem{" +
@@ -168,11 +196,13 @@ public class GroceryItem implements Parcelable {
     }
 
 
+    @Ignore
     @Override
     public int describeContents() {
         return 0;
     }
 
+    @Ignore
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(id);

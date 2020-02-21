@@ -3,9 +3,18 @@ package com.example.shopper.Models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class Review implements Parcelable {
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
 
+@Entity(tableName = "reviews")
+public class Review implements Parcelable {
+    @PrimaryKey(autoGenerate = true)
+    private int _id;
+    @ColumnInfo(name = "grocery_item_id")
     private int groceryItemId;
+    @ColumnInfo(name = "user_name")
     private String userName;
     private String date;
     private String text;
@@ -17,6 +26,7 @@ public class Review implements Parcelable {
         this.text = text;
     }
 
+    @Ignore
     protected Review(Parcel in) {
         groceryItemId = in.readInt();
         userName = in.readString();
@@ -24,6 +34,7 @@ public class Review implements Parcelable {
         text = in.readString();
     }
 
+    @Ignore
     public static final Creator<Review> CREATOR = new Creator<Review>() {
         @Override
         public Review createFromParcel(Parcel in) {
@@ -35,6 +46,14 @@ public class Review implements Parcelable {
             return new Review[size];
         }
     };
+
+    public int get_id() {
+        return _id;
+    }
+
+    public void set_id(int _id) {
+        this._id = _id;
+    }
 
     public int getGroceryItemId() {
         return groceryItemId;
@@ -68,6 +87,7 @@ public class Review implements Parcelable {
         this.text = text;
     }
 
+    @Ignore
     @Override
     public String toString() {
         return "Review{" +
@@ -78,11 +98,13 @@ public class Review implements Parcelable {
                 '}';
     }
 
+    @Ignore
     @Override
     public int describeContents() {
         return 0;
     }
 
+    @Ignore
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(groceryItemId);

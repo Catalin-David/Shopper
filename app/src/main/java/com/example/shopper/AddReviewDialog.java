@@ -77,6 +77,8 @@ public class AddReviewDialog extends DialogFragment {
                 addReview = (AddReview) getActivity();
 
                 addReview.onAddReviewResult(review);
+
+                dismiss();
             } catch (ClassCastException e) {
                 e.printStackTrace();
             }

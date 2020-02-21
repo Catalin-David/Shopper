@@ -41,7 +41,6 @@ public class MainFragment extends Fragment {
         initBottomNavigation();
 
         utils = new Utils(getActivity());
-        utils.initDatabase();
 
         initRecViews();
 
